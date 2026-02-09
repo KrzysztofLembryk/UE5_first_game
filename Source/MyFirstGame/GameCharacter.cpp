@@ -36,14 +36,15 @@ void AGameCharacter::MoveUD(float movementDelta)
 	SetActorLocation(newLoc);
 }
 
-void AGameCharacter::Jump(float movementDelta)
+void AGameCharacter::Jump()
 {
-	FVector newLoc = GetActorLocation();
-	newLoc.Z += movementDelta * this->MovementSpeed;
-
-	SetActorLocation(newLoc);
+	if (!this->isJumping)
+	{
+		this->isJumping = true;
+		FVector currLoc = GetActorLocation();
+		this->startZ = currLoc.Z;
+	}
 }
-
 
 // Called when the game starts or when spawned
 void AGameCharacter::BeginPlay()
@@ -57,6 +58,33 @@ void AGameCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (this->isJumping)
+	{
+		this->currOffset += DeltaTime * this->JumpSpeed * float(this->currDirection);
+
+		if (
+			this->currDirection == JumpDirection::UP 
+			&& this->currOffset >= this->MaxJumpHeight
+		)
+		{
+			this->currOffset = this->MaxJumpHeight;
+			this->currDirection = JumpDirection::DOWN;
+		}
+		else if (
+			this->currDirection == JumpDirection::DOWN 
+			&& this->currOffset <= 0
+		)
+		{
+			this->currOffset = 0;
+			this->currDirection = JumpDirection::UP;
+			this->isJumping = false;
+		}
+
+		FVector newLoc = GetActorLocation();
+		UE_LOG(LogTemp, Display, TEXT("Tick, prev loc: %s, curr offset: %f"), *newLoc.ToString(), this->currOffset);
+		newLoc.Z = this->startZ + this->currOffset;
+		SetActorLocation(newLoc);
+	}
 }
 
 // Called to bind functionality to input
@@ -71,6 +99,6 @@ void AGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("MoveUD"), this, &AGameCharacter::MoveUD);
 
 	// Register Jump
-	PlayerInputComponent->BindAxis(TEXT("Jump"), this, &AGameCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AGameCharacter::Jump);
 }
 

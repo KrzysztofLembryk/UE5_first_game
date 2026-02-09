@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "JumpEnum.h"
 #include "GameCharacter.generated.h"
 
 
@@ -19,9 +20,12 @@ public:
 	AGameCharacter();
 	void MoveLR(float movementDelta);
 	void MoveUD(float movementDelta);
-	void Jump(float movementDelta);
+	void Jump();
 
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 	// #### VARIABLES ####
 	// Main pawn camera
 	UPROPERTY(EditAnywhere)
@@ -34,9 +38,20 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Character Movement Settings")
 	float MovementSpeed = 1.0;
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	// Settings 
+	UPROPERTY(EditAnywhere, Category = "Jump Settings")
+	float MaxJumpHeight = 200.0;
+	
+	UPROPERTY(EditAnywhere, Category = "Jump Settings")
+	float JumpSpeed = 350.0;
 
+private:
+	bool isJumping = false;
+	float startZ = 0;
+	// Current offset relative to start
+	float currOffset = 0.0;
+	// Direction in which the jump is beeing executed
+	JumpDirection currDirection = JumpDirection::UP;
 
 public:	
 	// Called every frame
