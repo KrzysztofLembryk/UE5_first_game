@@ -6,7 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "JumpEnum.h"
+#include "MoveEnum.h"
 #include "GameCharacter.generated.h"
 
 
@@ -51,7 +51,7 @@ private:
 	// Current offset relative to start
 	float currOffset = 0.0;
 	// Direction in which the jump is beeing executed
-	JumpDirection currDirection = JumpDirection::UP;
+	MoveDirection currDirection = MoveDirection::UP;
 
 public:	
 	// Called every frame

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "JumpEnum.h"
+#include "MoveEnum.h"
 #include "JumpActor.generated.h"
 
 
@@ -41,7 +41,7 @@ private:
 	// Current offset relative to start
 	float currOffset = 0.0;
 	// Direction in which the jump is beeing executed
-	JumpDirection currDirection = JumpDirection::UP;
+	MoveDirection currDirection = MoveDirection::UP;
 	
 
 public:	

@@ -32,20 +32,20 @@ void AJumpActor::Tick(float DeltaTime)
 	this->currOffset += DeltaTime * this->JumpSpeed * float(this->currDirection);
 
 	if (
-		this->currDirection == JumpDirection::UP 
+		this->currDirection == MoveDirection::UP 
 		&& this->currOffset >= this->MaxJumpHeight
 	)
 	{
 		this->currOffset = this->MaxJumpHeight;
-		this->currDirection = JumpDirection::DOWN;
+		this->currDirection = MoveDirection::DOWN;
 	}
 	else if (
-		this->currDirection == JumpDirection::DOWN 
+		this->currDirection == MoveDirection::DOWN 
 		&& this->currOffset <= 0
 	)
 	{
 		this->currOffset = 0;
-		this->currDirection = JumpDirection::UP;
+		this->currDirection = MoveDirection::UP;
 	}
 
 	FVector newPos = this->startPos;
