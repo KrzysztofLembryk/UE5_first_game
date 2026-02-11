@@ -18,4 +18,11 @@ class MYFIRSTGAME_API AMyGameModeBase : public AGameModeBase
 
 public:
 	AMyGameModeBase();
+
+	// AGameModeBase Interface
+	virtual void InitGameState() override;
+
+protected:
+	UPROPERTY()
+	float GameSessionAllowedTimeSeconds = 20.0;
 };

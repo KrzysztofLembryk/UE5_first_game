@@ -18,8 +18,8 @@ class MYFIRSTGAME_API AGameCharacter : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AGameCharacter();
-	void MoveLR(float movementDelta);
-	void MoveUD(float movementDelta);
+	void MoveRight(float movementDelta);
+	void MoveForward(float movementDelta);
 	void Jump();
 
 protected:

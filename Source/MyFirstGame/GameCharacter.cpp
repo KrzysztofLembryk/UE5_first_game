@@ -20,7 +20,13 @@ AGameCharacter::AGameCharacter()
 	this->Camera->SetRelativeLocation(FVector(-200.0f, 0.0f, 150.0f));
 }
 
-void AGameCharacter::MoveLR(float movementDelta)
+// Called when the game starts or when spawned
+void AGameCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AGameCharacter::MoveRight(float movementDelta)
 {
 	FVector newLoc = GetActorLocation();
 	newLoc.Y += movementDelta * this->MovementSpeed;
@@ -28,7 +34,7 @@ void AGameCharacter::MoveLR(float movementDelta)
 	SetActorLocation(newLoc);
 }
 
-void AGameCharacter::MoveUD(float movementDelta)
+void AGameCharacter::MoveForward(float movementDelta)
 {
 	FVector newLoc = GetActorLocation();
 	newLoc.X += movementDelta * this->MovementSpeed;
@@ -44,13 +50,6 @@ void AGameCharacter::Jump()
 		FVector currLoc = GetActorLocation();
 		this->startZ = currLoc.Z;
 	}
-}
-
-// Called when the game starts or when spawned
-void AGameCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -92,13 +91,16 @@ void AGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Register LR movement
-	PlayerInputComponent->BindAxis(TEXT("MoveLR"), this, &AGameCharacter::MoveLR);
-
-	// Register UD movement
-	PlayerInputComponent->BindAxis(TEXT("MoveUD"), this, &AGameCharacter::MoveUD);
-
-	// Register Jump
-	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AGameCharacter::Jump);
+	if (PlayerInputComponent)
+	{
+		// Register LR movement
+		PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AGameCharacter::MoveRight);
+	
+		// Register UD movement
+		PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AGameCharacter::MoveForward);
+	
+		// Register Jump
+		PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AGameCharacter::Jump);
+	}
 }
 
