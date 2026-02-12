@@ -16,16 +16,6 @@ UBoidSubsystem::UBoidSubsystem()
 void UBoidSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
     Super::OnWorldBeginPlay(InWorld);
-
-    // Initialize boids with random positions and velocities
-    // for (int32 i = 0; i < 100; i++)
-    // {
-    //     FBoid NewBoid;
-    //     NewBoid.Id = this->NextBoidId++;
-    //     NewBoid.Position = FVector(FMath::FRandRange(-1000.0f, 1000.0f), FMath::FRandRange(-1000.0f, 1000.0f), FMath::FRandRange(-1000.0f, 1000.0f));
-    //     NewBoid.Velocity = FVector(FMath::FRandRange(-50.0f, 50.0f), FMath::FRandRange(-50.0f, 50.0f), FMath::FRandRange(-50.0f, 50.0f));
-    //     this->Boids.Add(NewBoid);
-    // }
 }
 
 void UBoidSubsystem::Tick(float DeltaTime)
@@ -86,7 +76,11 @@ void UBoidSubsystem::RegisterActor(AActor* BoidActor)
     FBoid NewBoid;
     NewBoid.Id = this->NextBoidId;
     NewBoid.Position = BoidActor->GetActorLocation();
-    NewBoid.Velocity = FVector(FMath::RandRange(-100, 100), 0.0f, 0.0f); 
+    NewBoid.Velocity = FVector(
+        FMath::RandRange(-100, 100), 
+        FMath::RandRange(-100, 100), 
+        0.0f
+    ); 
     this->Boids.Add(NewBoid);
     this->BoidActorMap.Add(NewBoid.Id, BoidActor);
 }
