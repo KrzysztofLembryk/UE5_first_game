@@ -109,7 +109,7 @@ void APlayerPawn::HandleCameraInput(const FInputActionValue& InputValue)
             FInputActionValue::Axis2D MouseXYDelta = InputValue.Get<FInputActionValue::Axis2D>();
 
             AddControllerYawInput(MouseXYDelta.X);
-            AddControllerPitchInput(-MouseXYDelta.Y); // Invert pitch so mouse up = look up
+            AddControllerPitchInput(-MouseXYDelta.Y); 
             break;
         }
     default:
