@@ -42,7 +42,8 @@ void UBoidSubsystem::Tick(float DeltaTime)
 
         if (AActor** BoidActor = this->BoidActorMap.Find(Boid.Id))
         {
-            (*BoidActor)->SetActorLocation(Boid.Position);
+            (*BoidActor)->SetActorLocation(Boid.Position, true);
+            (*BoidActor)->SetActorRotation(Boid.Velocity.Rotation());
         }
     }
 
