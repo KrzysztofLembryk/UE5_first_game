@@ -78,8 +78,8 @@ void UBoidSubsystem::RegisterActor(AActor* BoidActor)
     NewBoid.Id = this->NextBoidId;
     NewBoid.Position = BoidActor->GetActorLocation();
     NewBoid.Velocity = FVector(
-        FMath::RandRange(-100, 100), 
-        FMath::RandRange(-100, 100), 
+        FMath::RandRange(-200, 200), 
+        FMath::RandRange(-200, 200), 
         0.0f
     ); 
     this->Boids.Add(NewBoid);
