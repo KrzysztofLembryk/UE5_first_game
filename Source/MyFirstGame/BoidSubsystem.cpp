@@ -2,15 +2,16 @@
 
 
 #include "BoidSubsystem.h"
+#include "Monster.h"
 
 UBoidSubsystem::UBoidSubsystem()
 {
 	this->NeighbourRadius = 500.0f;
-	this->SeparationWeight = 1.0f;
-	this->AlignmentWeight = 1.0f;
-	this->CohesionWeight = 1.0f;
+	this->SeparationWeight = 1.2f;
+	this->AlignmentWeight = 1.2f;
+	this->CohesionWeight = 1.2f;
 	this->MaxSpeed = 200.0f;
-	this->MaxForce = 200.0f;
+	this->MaxForce = 100.0f;
 }
 
 void UBoidSubsystem::OnWorldBeginPlay(UWorld& InWorld)
@@ -42,6 +43,7 @@ void UBoidSubsystem::Tick(float DeltaTime)
 
         if (AActor** BoidActor = this->BoidActorMap.Find(Boid.Id))
         {
+            Boid.Position.Z = 0.0f; // Keep boids on the ground plane
             (*BoidActor)->SetActorLocation(Boid.Position, true);
             (*BoidActor)->SetActorRotation(Boid.Velocity.Rotation());
         }
@@ -64,7 +66,7 @@ TStatId UBoidSubsystem::GetStatId() const
 }
 
 
-void UBoidSubsystem::RegisterActor(AActor* BoidActor)
+void UBoidSubsystem::RegisterActor(AActor* BoidActor, uint32 *ActorId)
 {
     if (!BoidActor)
     {
@@ -84,16 +86,28 @@ void UBoidSubsystem::RegisterActor(AActor* BoidActor)
     ); 
     this->Boids.Add(NewBoid);
     this->BoidActorMap.Add(NewBoid.Id, BoidActor);
+
+    *ActorId = NewBoid.Id;
 }
 
 
-void UBoidSubsystem::UnRegisterActor(AActor* BoidActor)
+bool UBoidSubsystem::UnRegisterActor(uint32 ActorId)
 {
-    if (!BoidActor)
+    this->BoidActorMap.Remove(ActorId);
+
+    int32 IndexToRemove = this->Boids.IndexOfByPredicate(
+        [ActorId] (const FBoid &Val) {
+            return Val.Id == ActorId;
+        }
+    );
+
+    if (IndexToRemove != INDEX_NONE)
     {
-        UE_LOG(LogTemp, Warning, TEXT("UBoidSubsystem::UnRegisterActor - Attempted to unregister a null actor!"));
-        return;
+        this->Boids.RemoveAtSwap(IndexToRemove);
+        return true;
     }
+
+    return false;
 }
 
 FVector UBoidSubsystem::ApplySeparation(const FBoid& Boid)

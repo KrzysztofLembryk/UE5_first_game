@@ -29,8 +29,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
 
-	void RegisterActor(AActor* Actor);
-	void UnRegisterActor(AActor* Actor);
+	void RegisterActor(AActor* Actor, uint32 *ActorId);
+	bool UnRegisterActor(uint32 ActorId);
+
 protected:
 	FVector ApplySeparation(const FBoid& Boid);
 	FVector ApplyAlignment(const FBoid& Boid);

@@ -20,6 +20,7 @@ void AMyGameStateBase::Tick(float DeltaSeconds)
     else
     {
         this->TimeLeftInSession -= DeltaSeconds;
-        UE_LOG(LogTemp, Warning, TEXT("Time left: %f"), this->TimeLeftInSession);
+        // UE_LOG(LogTemp, Warning, TEXT("Time left: %f"), this->TimeLeftInSession);
+        // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(this->TimeLeftInSession));
     }
 }

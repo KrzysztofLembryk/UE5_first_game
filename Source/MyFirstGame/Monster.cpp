@@ -24,11 +24,13 @@ void AMonster::BeginPlay()
 		return;
 	}
 
-	BoidSubSys->RegisterActor(this);
+	BoidSubSys->RegisterActor(this, &this->Id);
 }
 
 void AMonster::Destroyed()
 {
+	Super::Destroyed();
+
 	UBoidSubsystem *BoidSubSys = GetWorld()->GetSubsystem<UBoidSubsystem>();
 
 	if(!BoidSubSys)
@@ -37,9 +39,7 @@ void AMonster::Destroyed()
 		return;
 	}
 
-	BoidSubSys->UnRegisterActor(this);
-
-	Super::Destroyed();
+	BoidSubSys->UnRegisterActor(this->Id);
 }
 
 // Called every frame
@@ -55,4 +55,3 @@ void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-

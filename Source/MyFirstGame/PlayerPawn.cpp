@@ -5,6 +5,16 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Monster.h"
+
+void APlayerPawn::ConsumeMonster(AActor *Actor)
+{
+    if (AMonster *Monster = Cast<AMonster>(Actor))
+    {
+        Monster->Destroy();
+    }
+}
+
 
 void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

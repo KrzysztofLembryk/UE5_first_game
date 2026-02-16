@@ -25,10 +25,6 @@ class MYFIRSTGAME_API APlayerPawn : public ADefaultPawn
 	GENERATED_BODY()
 	
 public:
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	void HandleMovementInput(const FInputActionValue& InputValue);
-	void HandleCameraInput(const FInputActionValue& InputValue);
 
 	// Changing speed to acceleration per second, because now, ADefaultPawn gives us a 
 	// FloatingPawnMovement component, which handles movement by adding acceleration to the 
@@ -44,4 +40,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "EI Settings")
 	TObjectPtr<UInputAction> CameraInputAction;
+
+	UFUNCTION(BlueprintCallable)
+	void ConsumeMonster(AActor *Actor);
+
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void HandleMovementInput(const FInputActionValue& InputValue);
+	void HandleCameraInput(const FInputActionValue& InputValue);
 };
